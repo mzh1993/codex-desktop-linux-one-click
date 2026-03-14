@@ -1,39 +1,44 @@
 # Codex Desktop Linux One-Click
 
-Run Codex Desktop on Ubuntu 20.04 and other older Linux hosts without upgrading the kernel, replacing the system compiler, or changing the host distro.
+> Unofficial one-click Codex Desktop compatibility build for Ubuntu 20.04 and other older Linux hosts.
+>
+> The goal is simple: get a usable desktop Codex experience **without upgrading the kernel, replacing the distro, or touching the host toolchain**.
 
-This repository is an unofficial compatibility build path for people who want a desktop Codex experience on older Linux machines, especially hosts where system upgrades are risky or simply not allowed.
+![Ubuntu 20.04 Compatible](https://img.shields.io/badge/Ubuntu-20.04%20compatible-E95420)
+![Docker Build](https://img.shields.io/badge/build-Docker-2496ED)
+![No Kernel Upgrade](https://img.shields.io/badge/host-no%20kernel%20upgrade-2E8B57)
+![License MIT](https://img.shields.io/badge/license-MIT-black)
 
-## Why this repo exists
+## Why this project matters
 
-Older Linux environments can fail to run Codex Desktop cleanly because of a few common issues:
+A lot of Linux users are blocked in exactly the same way:
 
-- native modules built against newer glibc expectations
-- Electron runtime mismatch on older hosts
-- black or transparent main window on Ubuntu 20.04 + X11 + NVIDIA
-- missing desktop launcher and icon integration after manual conversion
+- the machine is stable, but old
+- the business environment does not allow distro or kernel upgrades
+- native modules break on older glibc targets
+- Electron behaves badly on Ubuntu 20.04 + X11 + NVIDIA
+- manual conversion leaves no clean launcher, icon, or desktop integration
 
-This repository turns that into a one-command workflow.
+This repository packages the full workaround into a reproducible one-command flow.
+
+## What you get
+
+- Ubuntu 20.04-friendly build path
+- no kernel upgrade required
+- no host compiler replacement required
+- one-click Docker build
+- rebuilt native modules for better old-system compatibility
+- Linux black-window fix for the desktop app
+- launcher, icon, desktop shortcut, and GNOME favorites support
 
 ## Best fit
 
-Use this repository if you want:
+This repo is a strong fit if you want to run Codex Desktop on:
 
-- Ubuntu 20.04 compatibility
-- a low-risk path that avoids kernel and distro upgrades
-- a desktop launcher, icon, and GNOME favorites integration
-- a reproducible build flow you can rerun on similar machines
-
-## What the one-click flow does
-
-- builds inside Docker with `ubuntu:20.04`
-- downloads the official `Codex.dmg`
-- extracts the macOS app bundle with bundled 7-Zip
-- rebuilds `better-sqlite3` and `node-pty` with `clang-18` + `libc++`
-- keeps the native output compatible with Ubuntu 20.04 glibc
-- bundles required runtime libraries into `codex-app/runtime-libs/`
-- patches the Linux Electron window background to avoid the common black-window issue on older Ubuntu + X11 + NVIDIA setups
-- installs an app launcher, icon, GNOME favorites-compatible entry, and a desktop shortcut
+- Ubuntu 20.04
+- older Linux workstations
+- controlled production or enterprise machines
+- hosts where changing the base OS is higher risk than containerizing the build
 
 ## Quick start
 
@@ -50,6 +55,19 @@ Launch immediately after build:
 ./one-click-install.sh --run
 ```
 
+## How it works
+
+The one-click path does all of this for you:
+
+- builds inside Docker with `ubuntu:20.04`
+- downloads the official `Codex.dmg`
+- extracts the macOS app bundle with bundled 7-Zip
+- rebuilds `better-sqlite3` and `node-pty` with `clang-18` + `libc++`
+- keeps the native output compatible with Ubuntu 20.04 glibc
+- bundles runtime libraries into `codex-app/runtime-libs/`
+- patches the Linux Electron window background to avoid the common black-window issue on older Ubuntu + X11 + NVIDIA setups
+- installs an app launcher, icon, GNOME favorites-compatible entry, and a desktop shortcut
+
 ## Requirements
 
 Build-time:
@@ -59,7 +77,7 @@ Build-time:
 
 Run-time:
 
-- host `codex` CLI in `PATH`
+- host `codex` CLI available in `PATH`
 
 Install the CLI if needed:
 
@@ -67,16 +85,16 @@ Install the CLI if needed:
 npm i -g @openai/codex
 ```
 
-## Output
+## Output after install
 
-After a successful build:
+After a successful run, you get:
 
 - app directory: `codex-app/`
 - launcher: `~/.local/share/applications/codex-desktop.desktop`
 - icon: `~/.local/share/icons/hicolor/512x512/apps/codex-desktop.png`
 - desktop shortcut: `~/Desktop/Codex.desktop` when a desktop folder exists
 
-Run manually:
+Run manually at any time:
 
 ```bash
 ./codex-app/start.sh
@@ -84,9 +102,9 @@ Run manually:
 
 ## Main scripts
 
-- `one-click-install.sh` - recommended entrypoint
-- `build-in-docker.sh` - Docker build path used by the one-click script
-- `install.sh` - low-level conversion and patch flow
+- `one-click-install.sh` - recommended public entrypoint
+- `build-in-docker.sh` - Ubuntu 20.04 Docker build flow
+- `install.sh` - low-level conversion, rebuild, patch, and packaging logic
 
 ## Useful overrides
 
@@ -104,7 +122,7 @@ ELECTRON_DOWNLOAD_URL='https://npmmirror.com/mirrors/electron/40.0.0/electron-v4
 
 ## Notes
 
-- this repository is designed to automate conversion for a user's own copy of the official app
+- this project automates conversion for a user's own copy of the official app
 - `Codex.dmg` and generated `codex-app/` are intentionally ignored from source control
 - `start.sh` already clears `ELECTRON_RUN_AS_NODE` and adds `--no-sandbox`
 - do not add `--disable-gpu` with the current bundle
