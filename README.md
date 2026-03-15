@@ -124,9 +124,25 @@ ELECTRON_DOWNLOAD_URL='https://npmmirror.com/mirrors/electron/40.0.0/electron-v4
 
 - this project automates conversion for a user's own copy of the official app
 - `Codex.dmg` and generated `codex-app/` are intentionally ignored from source control
-- `start.sh` already clears `ELECTRON_RUN_AS_NODE` and adds `--no-sandbox`
+- `start.sh` clears `ELECTRON_RUN_AS_NODE`, disables the GTK portal path with `GTK_USE_PORTAL=0`, and starts Electron with `--no-sandbox --xdg-portal-required-version=999`
+- the portal bypass is intentional: on Ubuntu 20.04 + X11 + NVIDIA, `File -> Open Folder` can fail for every directory when `xdg-desktop-portal-gtk` logs `Unhandled parent window type` and `Failed to associate portal window with parent window`
 - do not add `--disable-gpu` with the current bundle
 - this is an unofficial community workaround, not an official Linux release from OpenAI
+
+## Troubleshooting
+
+If `File -> Open Folder` cannot open any directory, even though manual startup works, check the user portal logs:
+
+```bash
+systemctl --user status xdg-desktop-portal.service xdg-desktop-portal-gtk.service
+```
+
+A broken portal path usually looks like this:
+
+- `Unhandled parent window type`
+- `Failed to associate portal window with parent window`
+
+This build avoids that code path by launching Codex through the bundled `start.sh` and the generated desktop launcher, both of which force the non-portal GTK file picker.
 
 ## License
 

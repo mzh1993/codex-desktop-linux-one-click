@@ -370,8 +370,9 @@ create_desktop_entry() {
 [Desktop Entry]
 Type=Application
 Name=Codex
-Comment=OpenAI Codex Desktop on Linux
+Comment=OpenAI Codex Desktop on Linux (portal-safe launcher)
 Exec=$INSTALL_DIR/start.sh %U
+Path=$INSTALL_DIR
 Icon=codex-desktop
 Terminal=false
 Categories=Development;
@@ -407,8 +408,9 @@ create_desktop_shortcut() {
 [Desktop Entry]
 Type=Application
 Name=Codex
-Comment=OpenAI Codex Desktop on Linux
+Comment=OpenAI Codex Desktop on Linux (portal-safe launcher)
 Exec=$INSTALL_DIR/start.sh %U
+Path=$INSTALL_DIR
 Icon=codex-desktop
 Terminal=false
 Categories=Development;
@@ -459,9 +461,10 @@ if [ -z "$CODEX_CLI_PATH" ]; then
 fi
 
 unset ELECTRON_RUN_AS_NODE
+export GTK_USE_PORTAL="${GTK_USE_PORTAL:-0}"
 
 cd "$SCRIPT_DIR"
-exec "$SCRIPT_DIR/electron" --no-sandbox "$@"
+exec "$SCRIPT_DIR/electron" --no-sandbox --xdg-portal-required-version=999 "$@"
 SCRIPT
 
   chmod +x "$INSTALL_DIR/start.sh"

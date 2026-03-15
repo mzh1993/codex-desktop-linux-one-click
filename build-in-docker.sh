@@ -56,8 +56,9 @@ create_host_desktop_entry() {
 [Desktop Entry]
 Type=Application
 Name=Codex
-Comment=OpenAI Codex Desktop on Linux
+Comment=OpenAI Codex Desktop on Linux (portal-safe launcher)
 Exec=$SCRIPT_DIR/codex-app/start.sh %U
+Path=$SCRIPT_DIR/codex-app
 Icon=codex-desktop
 Terminal=false
 Categories=Development;
