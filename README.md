@@ -9,6 +9,16 @@
 ![No Kernel Upgrade](https://img.shields.io/badge/host-no%20kernel%20upgrade-2E8B57)
 ![License MIT](https://img.shields.io/badge/license-MIT-black)
 
+## Upstream Inspiration
+
+This repository is an independent follow-on effort, but it was clearly inspired by [ilysenko/codex-desktop-linux](https://github.com/ilysenko/codex-desktop-linux), an earlier open-source Linux installer for Codex Desktop.
+
+That project established the core conversion direction: extract the macOS app, rebuild native modules for Linux, replace the Electron runtime, and generate a runnable launcher. This repository builds on that general idea with a stronger Ubuntu 20.04 compatibility path, Docker-based packaging, desktop integration, and additional Linux-specific fixes.
+
+If you want a smaller, more direct installer, or just want to see the earlier community work this repo learned from, please also check out the upstream project:
+
+- [ilysenko/codex-desktop-linux](https://github.com/ilysenko/codex-desktop-linux)
+
 ## Why this project matters
 
 A lot of Linux users are blocked in exactly the same way:
